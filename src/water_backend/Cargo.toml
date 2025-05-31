@@ -1,0 +1,9 @@
+[package]
+name = "water_backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ic-cdk = "0.7.0"
+ic-cdk-macros = "0.7.0"
+serde = { version = "1.0", features = ["derive"] }

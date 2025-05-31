@@ -1,0 +1,2658 @@
+service water_tracking {
+  record_usage : (liters: float64, timestamp: nat64, device_id: opt text) -> ();
+  calculate_flow_rate : (duration_seconds: nat64) -> (float64) query;
+  calibrate_sensor : (sensor_id: text, factor: float64) -> ();
+  get_historical_consumption : (days: nat32) -> (vec DailyUsage) query;
+}
+
+type DailyUsage = record {
+  date: nat64;
+  total_liters: float64;
+  peak_flow: float64;
+  avg_flow: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor: float64;
+};
+
+type SensorCalibration = record {
+  calibration_date: nat64;
+  last_reading: float64;
+  adjustment_factor

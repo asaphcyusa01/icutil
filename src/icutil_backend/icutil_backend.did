@@ -1,0 +1,55 @@
+type FlowReading = record {
+    timestamp: nat64;
+    flow_rate: float64;
+    device_id: opt text;
+};
+
+type FlowError = variant {
+    InvalidFlowRate: text;
+    StorageError: text;
+    DataNotFound;
+};
+
+type FlowStatistics = record {
+    count: nat;
+    average: float64;
+    min: float64;
+    max: float64;
+    std_deviation: float64;
+    total_volume: float64;
+};
+
+type FlowResult_String = variant {
+    Ok: text;
+    Err: FlowError;
+};
+
+type FlowResult_Vec_FlowReading = variant {
+    Ok: vec FlowReading;
+    Err: FlowError;
+};
+
+type FlowResult_Float64 = variant {
+    Ok: float64;
+    Err: FlowError;
+};
+
+type FlowResult_FlowStatistics = variant {
+    Ok: FlowStatistics;
+    Err: FlowError;
+};
+
+type FlowResult_Nat = variant {
+    Ok: nat;
+    Err: FlowError;
+};
+
+service : {
+    "record_flow_data": (float64, opt text) -> (FlowResult_String);
+    "get_recent_readings": (nat) -> (FlowResult_Vec_FlowReading) query;
+    "get_average_flow_rate": () -> (FlowResult_Float64) query;
+    "get_flow_statistics": () -> (FlowResult_FlowStatistics) query;
+    "export_all_readings": () -> (FlowResult_String) query;
+    "get_readings_count": () -> (FlowResult_Nat) query;
+    "clear_all_readings": () -> (FlowResult_String);
+}

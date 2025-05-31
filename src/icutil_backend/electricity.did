@@ -1,0 +1,20 @@
+service electricity_tracking {
+  record_reading : (kwh: float64, timestamp: nat64, device_id: opt text) -> ();
+  get_current_usage : () -> (hourly: float64, daily: float64) query;
+  get_readings : (from: nat64, to: nat64) -> (vec Reading) query;
+  register_sensor : (sensor_id: text, sensor_type: text) -> ();
+}
+
+type Reading = record {
+  timestamp: nat64;
+  kwh: float64;
+  device_id: opt text;
+  voltage: float64;
+  current: float64;
+};
+
+type SensorInfo = record {
+  sensor_type: text;
+  calibration_factor: float64;
+  last_calibration: nat64;
+};

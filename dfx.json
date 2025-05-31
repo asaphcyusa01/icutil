@@ -1,0 +1,37 @@
+{
+  "canisters": {
+    "electricity_backend": {
+      "candid": "src/electricity_backend/electricity_backend.did",
+      "package": "electricity_backend",
+      "type": "rust"
+    },
+    "water_backend": {
+      "candid": "src/water_backend/water_backend.did",
+      "package": "water_backend",
+      "type": "rust"
+    },
+    "icutil_backend": {
+      "candid": "src/icutil_backend/icutil_backend.did",
+      "package": "icutil_backend",
+      "type": "rust"
+    },
+    "icutil_frontend": {
+      "dependencies": [
+        "icutil_backend"
+      ],
+      "source": [
+        "src/icutil_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "icutil_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
