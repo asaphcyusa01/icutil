@@ -1,0 +1,11 @@
+type ElectricityReading = record {
+    timestamp: nat64;
+    kwh: float64;
+};
+
+service : {
+    add_electricity_reading: (float64) -> (bool);
+    get_total_kwh: () -> (float64) query;
+    get_electricity_readings: () -> (vec ElectricityReading) query;
+    reset_electricity_data: () -> (bool);
+} 

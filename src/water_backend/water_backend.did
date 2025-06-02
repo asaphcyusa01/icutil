@@ -1,0 +1,11 @@
+type WaterReading = record {
+    timestamp: nat64;
+    liters: float64;
+};
+
+service : {
+    add_water_reading: (float64) -> (bool);
+    get_total_water_usage: () -> (float64) query;
+    get_water_readings: () -> (vec WaterReading) query;
+    reset_water_data: () -> (bool);
+} 
