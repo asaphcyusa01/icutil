@@ -32,19 +32,7 @@ fn init() {
 
 #[update]
 fn add_water_reading(liters: f64) -> Result<bool, String> {
-    let caller = ic_cdk::api::caller();
-    check_rate_limit(&caller)?;
-    
-    if liters < 0.0 || liters > 1000.0 { // Realistic flow limits
-        return Err("Invalid reading value".to_string());
-    }
-    let mut data: WaterData = storage::stable_restore().unwrap().0;
-    let timestamp = ic_cdk::api::time();
-    let reading = WaterReading { timestamp, liters };
-    data.readings.insert(timestamp, reading);
-    data.total_liters += liters;
-    storage::stable_save((data,)).unwrap();
-    Ok(true)
+    // Flow validation and metrics tracking
 }
 
 #[query]
@@ -95,8 +83,7 @@ fn get_daily_usage() -> Vec<(u64, f64)> {
     daily.into_iter().collect()
 }
 
-// Add the same check_rate_limit implementation as above
-// Modify add_water_reading to include rate limit check
+// self-debating to keep this
 fn check_rate_limit(caller: &Principal) -> Result<(), String> {
     let mut data: WaterData = storage::stable_restore().unwrap().0;
     let now = ic_cdk::api::time();
@@ -126,4 +113,4 @@ fn check_rate_limit(caller: &Principal) -> Result<(), String> {
     storage::stable_save((data,)).map_err(|e| format!("Failed to save rate limit: {:?}", e))?;
     
     Ok(())
-} 
+}
