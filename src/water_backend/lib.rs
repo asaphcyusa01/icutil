@@ -64,4 +64,28 @@ fn reset_water_data() -> bool {
     data.total_liters = 0.0;
     storage::stable_save((data,)).unwrap();
     true
+}
+
+#[query]
+fn get_water_readings_filtered(skip: u64, limit: u64, from: u64, to: u64) -> Vec<WaterReading> {
+    let data: WaterData = storage::stable_restore().unwrap().0;
+    data.readings.values()
+        .filter(|r| r.timestamp >= from && r.timestamp <= to)
+        .skip(skip as usize)
+        .take(limit as usize)
+        .cloned()
+        .collect()
+}
+
+#[query]
+fn get_daily_usage() -> Vec<(u64, f64)> {
+    let data: WaterData = storage::stable_restore().unwrap().0;
+    let mut daily: BTreeMap<u64, f64> = BTreeMap::new();
+    
+    for reading in data.readings.values() {
+        let day = reading.timestamp / 86400_000_000_000; // Group by day
+        *daily.entry(day).or_insert(0.0) += reading.liters;
+    }
+    
+    daily.into_iter().collect()
 } 
