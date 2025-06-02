@@ -17,7 +17,12 @@ struct ElectricityReading {
 struct ElectricityData {
     readings: HashMap<u64, ElectricityReading>,
     total_kwh: f64,
+    rate_limits: HashMap<Principal, (u64, u64)>, // (timestamp, count)
 }
+
+// Rate limit configuration
+const RATE_LIMIT_WINDOW: u64 = 60_000_000_000; // 1 minute in nanoseconds
+const MAX_REQUESTS_PER_MINUTE: u64 = 30;
 
 #[init]
 fn init() {
@@ -27,14 +32,24 @@ fn init() {
 }
 
 #[update]
-fn add_electricity_reading(kwh: f64) -> bool {
+fn add_electricity_reading(kwh: f64) -> Result<bool, String> {
+    let caller = ic_cdk::api::caller();
+    
+    // Check rate limit before processing
+    check_rate_limit(&caller)?;
+
+    // Existing validation
+    if kwh < 0.0 || kwh > 10000.0 {
+        return Err("Invalid electricity reading".to_string());
+    }
+
     let mut data: ElectricityData = storage::stable_restore().unwrap().0;
     let timestamp = ic_cdk::api::time();
     let reading = ElectricityReading { timestamp, kwh };
     data.readings.insert(timestamp, reading);
     data.total_kwh += kwh;
     storage::stable_save((data,)).unwrap();
-    true
+    Ok(true)
 }
 
 #[query]
@@ -80,4 +95,36 @@ fn validate_reading(timestamp: u64) -> Result<(), String> {
     } else {
         Ok(())
     }
+}
+
+// Add rate limiting check
+fn check_rate_limit(caller: &Principal) -> Result<(), String> {
+    let mut data: ElectricityData = storage::stable_restore().unwrap().0;
+    let now = ic_cdk::api::time();
+    
+    let (first_request, count) = data.rate_limits
+        .get(caller)
+        .unwrap_or(&(now, 0));
+
+    let window_start = if now - first_request > RATE_LIMIT_WINDOW {
+        // New time window
+        now
+    } else {
+        *first_request
+    };
+
+    let new_count = if window_start == *first_request {
+        count + 1
+    } else {
+        1
+    };
+
+    if new_count > MAX_REQUESTS_PER_MINUTE {
+        return Err("Rate limit exceeded. Try again later.".to_string());
+    }
+
+    data.rate_limits.insert(*caller, (window_start, new_count));
+    storage::stable_save((data,)).map_err(|e| format!("Failed to save rate limit: {:?}", e))?;
+    
+    Ok(())
 } 

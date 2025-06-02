@@ -80,7 +80,11 @@ const Dashboard = () => {
         setWaterData(water);
         setError(null);
       } catch (err) {
-        setError(new Error(`Data fetch failed: ${err.message}`));
+        if (err.message.includes("Rate limit exceeded")) {
+          setError(new Error("Too many requests - please slow down"));
+        } else {
+          setError(new Error(`Data fetch failed: ${err.message}`));
+        }
       } finally {
         setIsLoading(false);
       }

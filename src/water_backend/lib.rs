@@ -6,6 +6,7 @@ use ic_cdk::export::candid::{CandidType, Deserialize};
 use ic_cdk::storage;
 use ic_cdk_macros::*;
 use std::collections::{HashMap, BTreeMap};
+use ic_cdk::api::Principal;
 
 #[derive(CandidType, Serialize, Deserialize, Clone, Debug)]
 struct WaterReading {
@@ -19,6 +20,7 @@ struct WaterData {
     total_liters: f64,
     daily_usage: BTreeMap<u64, f64>,
     anomaly_count: u32,
+    rate_limits: HashMap<Principal, (u64, u64)>,
 }
 
 #[init]
@@ -30,6 +32,9 @@ fn init() {
 
 #[update]
 fn add_water_reading(liters: f64) -> Result<bool, String> {
+    let caller = ic_cdk::api::caller();
+    check_rate_limit(&caller)?;
+    
     if liters < 0.0 || liters > 1000.0 { // Realistic flow limits
         return Err("Invalid reading value".to_string());
     }
@@ -88,4 +93,37 @@ fn get_daily_usage() -> Vec<(u64, f64)> {
     }
     
     daily.into_iter().collect()
+}
+
+// Add the same check_rate_limit implementation as above
+// Modify add_water_reading to include rate limit check
+fn check_rate_limit(caller: &Principal) -> Result<(), String> {
+    let mut data: WaterData = storage::stable_restore().unwrap().0;
+    let now = ic_cdk::api::time();
+    
+    let (first_request, count) = data.rate_limits
+        .get(caller)
+        .unwrap_or(&(now, 0));
+
+    let window_start = if now - first_request > RATE_LIMIT_WINDOW {
+        // New time window
+        now
+    } else {
+        *first_request
+    };
+
+    let new_count = if window_start == *first_request {
+        count + 1
+    } else {
+        1
+    };
+
+    if new_count > MAX_REQUESTS_PER_MINUTE {
+        return Err("Rate limit exceeded. Try again later.".to_string());
+    }
+
+    data.rate_limits.insert(*caller, (window_start, new_count));
+    storage::stable_save((data,)).map_err(|e| format!("Failed to save rate limit: {:?}", e))?;
+    
+    Ok(())
 } 
