@@ -32,6 +32,9 @@ fn init() {
 
 #[update]
 fn add_water_reading(liters: f64) -> Result<bool, String> {
+    if liters < 0.0 {
+        return Err("Negative water usage impossible".into());
+    }
     // Flow validation and metrics tracking
 }
 

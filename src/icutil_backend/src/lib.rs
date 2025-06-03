@@ -65,6 +65,9 @@ fn record_flow_data(flow_rate: f64, device_id: Option<String>) -> FlowResult<Str
         device_id,
     };
 
+    check_rate_limit(&caller)
+        .map_err(|e| FlowError::RateLimit(e))?;
+
     // Append the new reading
     flow_readings.push_back(new_reading);
 
@@ -218,3 +221,5 @@ where
         }
     }
 }
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
