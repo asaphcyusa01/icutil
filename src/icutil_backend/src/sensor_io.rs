@@ -31,8 +31,16 @@ async fn handle_esp32_payload(payload: SensorData) -> Result<HashMap<u64, bool>,
 }
 
 async fn validate_device(device_id: &str, signature: &str) -> Result<(), String> {
-    // Verifies device identity using stored secret keys
-    // Validates message integrity with HMAC-SHA256
+    use hmac::{Hmac, Mac};
+    use sha2::Sha256;
+
+    let key = KEY_MANAGER.get_current_key(device_id).await?;
+    let mut mac = Hmac::<Sha256>::new_from_slice(key.as_bytes())
+        .map_err(|_| "Invalid key length")?;
+    mac.update(device_id.as_bytes());
+    mac.verify_slice(hex::decode(signature).unwrap().as_slice())
+        .map_err(|_| "Invalid HMAC signature")?;
+    Ok(())
 }
 
 #[derive(candid::CandidType, Deserialize, Serialize)]

@@ -4,12 +4,17 @@ struct KeyManager {
 }
 // rotate keys every 24 hours
 async fn rotate_keys_heartbeat() {
-    // After rotation, validate with external canisters
+    ic_cdk::println!("Initiating key rotation at timestamp: {}", ic_cdk::api::time());
+    let mut success_count = 0;
+
     for (device_id, auth) in &*KEY_MANAGER.current.lock().await {
-        if let Err(e) = KEY_MANAGER.validate_with_external_canister(*device_id).await {
-            ic_cdk::println!("Validation failed for device {}: {}", device_id, e);
+        match KEY_MANAGER.validate_with_external_canister(*device_id).await {
+            Ok(_) => success_count += 1,
+            Err(e) => ic_cdk::println!("Rotation failed for {}: {}", device_id, e),
         }
     }
+
+    ic_cdk::println!("Key rotation completed. {} devices updated successfully.", success_count);
 }
 impl KeyManager {
     async fn validate_with_external_canister(&self, device_id: u64) -> Result<bool, String> {

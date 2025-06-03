@@ -32,7 +32,15 @@ fn init() {
 }
 
 #[update]
-fn add_electricity_reading(kwh: f64) -> Result<bool, String> {
+fn add_electricity_reading(kwh: f64) -> Result<bool, SensorError> {
+    check_rate_limit(&caller)
+        .map_err(|e| SensorError::RateLimit(e))?;
+
+    storage::stable_restore()
+        .map_err(|e| SensorError::Storage {
+            source: e,
+            context: "Failed to load electricity data".into()
+        })?;
     let caller = ic_cdk::api::caller();
     
     // Check rate limit before processing
@@ -98,33 +106,64 @@ fn validate_reading(timestamp: u64) -> Result<(), String> {
 }
 
 // Add rate limiting check
+thread_local! {
+    static RATE_LIMIT: RefCell<HashMap<Principal, (u64, u32)>> = RefCell::new(HashMap::new());
+}
+
 fn check_rate_limit(caller: &Principal) -> Result<(), String> {
-    let mut data: ElectricityData = storage::stable_restore().unwrap().0;
     let now = ic_cdk::api::time();
-    
-    let (first_request, count) = data.rate_limits
-        .get(caller)
-        .unwrap_or(&(now, 0));
+    RATE_LIMIT.with(|rl| {
+        let mut map = rl.borrow_mut();
+        let (last_called, attempts) = map.entry(*caller).or_insert((0, 0));
 
-    let window_start = if now - first_request > RATE_LIMIT_WINDOW {
-        // New time window
-        now
+        let backoff = 2u64.pow(*attempts) * 1_000_000_000; // Exponential backoff in nanoseconds
+        
+        if now - *last_called < backoff {
+            Err(format!("Too many requests. Try again in {} seconds", 
+                (backoff - (now - *last_called)) / 1_000_000_000))
+        } else {
+            *last_called = now;
+            *attempts = (*attempts + 1).min(5); // Cap at 32 seconds backoff
+            Ok(())
+        }
+    })
+}
+
+#[query]
+fn get_electricity_readings() -> Vec<ElectricityReading> {
+    let data: ElectricityData = storage::stable_restore().unwrap().0;
+    data.readings.values().cloned().collect()
+}
+
+#[update(guard = "is_authorized")]
+fn reset_electricity_data() -> bool {
+    let mut data = ElectricityData::default();
+    data.total_kwh = 0.0;
+    storage::stable_save((data,)).unwrap();
+    true
+}
+
+fn is_authorized() -> Result<(), String> {
+    let caller = ic_cdk::api::caller();
+    let admins: Vec<Principal> = storage::stable_restore().unwrap().1;
+    if admins.contains(&caller) {
+        Ok(())
     } else {
-        *first_request
-    };
-
-    let new_count = if window_start == *first_request {
-        count + 1
-    } else {
-        1
-    };
-
-    if new_count > MAX_REQUESTS_PER_MINUTE {
-        return Err("Rate limit exceeded. Try again later.".to_string());
+        Err("Unauthorized".to_string())
     }
+}
 
-    data.rate_limits.insert(*caller, (window_start, new_count));
-    storage::stable_save((data,)).map_err(|e| format!("Failed to save rate limit: {:?}", e))?;
-    
-    Ok(())
-} 
+fn load_data() -> Result<ElectricityData, String> {
+    storage::stable_restore()
+        .map(|(data, _)| data)
+        .map_err(|e| format!("Storage error: {:?}", e))
+}
+
+fn validate_reading(timestamp: u64) -> Result<(), String> {
+    let current_time = ic_cdk::api::time();
+    if timestamp > current_time + 60_000_000_000 { // 1 minute future tolerance
+        Err("Invalid timestamp".to_string())
+    } else {
+        Ok(())
+    }
+}

@@ -198,3 +198,23 @@ fn clear_all_readings() -> FlowResult<String> {
     
     Ok("All readings cleared successfully".to_string())
 }
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
