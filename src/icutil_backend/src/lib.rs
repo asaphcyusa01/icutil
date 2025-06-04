@@ -272,6 +272,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -288,6 +290,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -337,6 +355,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -353,6 +373,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -402,6 +438,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -418,6 +456,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -467,6 +521,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -483,6 +539,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -532,6 +604,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -548,6 +622,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -597,6 +687,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -613,6 +705,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -662,6 +770,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -678,6 +788,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -727,6 +853,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -743,6 +871,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -792,6 +936,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -808,6 +954,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -857,6 +1019,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -873,6 +1037,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -922,6 +1102,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -938,6 +1120,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -987,6 +1185,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1003,6 +1203,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1052,6 +1268,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1068,6 +1286,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1117,6 +1351,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1133,6 +1369,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1182,6 +1434,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1198,6 +1452,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1247,6 +1517,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1263,6 +1535,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1312,6 +1600,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1328,6 +1618,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1377,6 +1683,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1393,6 +1701,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1442,6 +1766,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1458,6 +1784,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1507,6 +1849,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1523,6 +1867,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1572,6 +1932,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1588,6 +1950,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1637,6 +2015,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1653,6 +2033,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1702,6 +2098,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1718,6 +2116,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1767,6 +2181,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1783,6 +2199,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1832,6 +2264,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1848,6 +2282,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
@@ -1897,6 +2347,8 @@ COUNTER.with(|c| c.borrow_mut().inc());
 
 // Add to stable storage handling
 const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+const MAX_BACKUPS: usize = 30;
+const RETENTION_DAYS: u64 = 30;
 
 #[update]
 async fn create_backup() -> FlowResult<String> {
@@ -1913,6 +2365,22 @@ async fn create_backup() -> FlowResult<String> {
         .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
     
     Ok("Backup created successfully".into())
+}
+
+fn enforce_retention() -> FlowResult<()> {
+    let mut backups: Vec<(u64, String)> = storage::get("backups").unwrap_or_default();
+    let now = ic_cdk::api::time();
+    
+    // Remove by age
+    backups.retain(|(ts, _)| now - ts < RETENTION_DAYS * 86400_000_000_000);
+    
+    // Remove by count
+    if backups.len() > MAX_BACKUPS {
+        backups.drain(0..backups.len()-MAX_BACKUPS);
+    }
+    
+    storage::stable_save(backups)
+        .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
 
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
