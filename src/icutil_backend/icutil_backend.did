@@ -49,6 +49,11 @@ service : {
     "record_flow_data": (float64, opt text, opt nat16) -> (FlowResult_String);
     "get_recent_readings": (nat, opt nat16) -> (FlowResult_Vec_FlowReading) query;
     "get_api_version": () -> (nat16) query;
+    "get_canister_metadata": () -> (record {
+        version: text;
+        build_hash: text;
+        backup_policy: text;
+    }) query;
 }
     "get_average_flow_rate": () -> (FlowResult_Float64) query;
     "get_flow_statistics": () -> (FlowResult_FlowStatistics) query;
