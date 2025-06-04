@@ -1,6 +1,9 @@
 use candid::{CandidType, Deserialize};
 use ic_cdk::storage;
 use ic_cdk_macros::{init, query, update};
+use ic_cdk::api::print;
+use lazy_static::lazy_static;
+use metrics::{Gauge, register_gauge};
 use serde::Serialize;
 use std::collections::VecDeque;
 
@@ -202,6 +205,26 @@ fn clear_all_readings() -> FlowResult<String> {
     Ok("All readings cleared successfully".to_string())
 }
 
+lazy_static! {
+    static ref CRITICAL_FLOW_ALERT: Gauge = register_gauge!(
+        "flow_rate_critical",
+        "Critical flow rate threshold"
+    ).unwrap();
+}
+
+#[ic_cdk::heartbeat]
+fn check_alerts() {
+    let stats = match get_flow_statistics() {
+        Ok(s) => s,
+        Err(_) => return,
+    };
+    
+    if stats.average > 900.0 {
+        CRITICAL_FLOW_ALERT.set(1.0);
+        log("ALERT", "Critical flow rate exceeded", None);
+    }
+}
+
 fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
 where
     F: FnMut() -> Result<T, ic_cdk::api::error::Error>
@@ -223,3 +246,1682 @@ where
 }
 ic_cdk::println!("Recording flow: {} L/min", flow_rate);
 COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_cdk::println!("Retry {} for storage operation", retries);
+                retries += 1;
+            }
+            Err(e) => return Err(SensorError::Storage {
+                source: e,
+                context: format!("Failed after {} retries", retries)
+            })
+        }
+    }
+}
+ic_cdk::println!("Recording flow: {} L/min", flow_rate);
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add at top
+use ic_cdk::api::print;
+
+#[derive(candid::CandidType, Serialize)]
+struct LogEntry {
+    timestamp: u64,
+    level: String,
+    message: String,
+    device_id: Option<String>,
+}
+
+fn log(level: &str, message: &str, device_id: Option<&String>) {
+    print(
+        &serde_json::to_string(&LogEntry {
+            timestamp: ic_cdk::api::time(),
+            level: level.into(),
+            message: message.into(),
+            device_id: device_id.cloned(),
+        }).unwrap()
+    );
+}
+COUNTER.with(|c| c.borrow_mut().inc());
+
+// Add to stable storage handling
+const BACKUP_INTERVAL: u64 = 86400_000_000_000; // 24h in nanoseconds
+
+#[update]
+async fn create_backup() -> FlowResult<String> {
+    let last_backup = storage::get::<u64>("last_backup").unwrap_or(0);
+    
+    if ic_cdk::api::time() - last_backup < BACKUP_INTERVAL {
+        return Err(FlowError::StorageError("Too frequent backups".into()));
+    }
+    
+    let backup_data = storage::stable_restore()
+        .map_err(|e| FlowError::StorageError(format!("Backup failed: {e:?}")))?;
+    
+    storage::stable_save((backup_data, "backup".to_string()))
+        .map_err(|e| FlowError::StorageError(format!("Backup storage failed: {e:?}")))?;
+    
+    Ok("Backup created successfully".into())
+}
+
+fn stable_retry<F, T>(mut f: F) -> Result<T, SensorError> 
+where
+    F: FnMut() -> Result<T, ic_cdk::api::error::Error>
+{
+    let mut retries = 0;
+    loop {
+        match f() {
+            Ok(v) => return Ok(v),
+            Err(e) if retries < 3 => {
+                ic_
