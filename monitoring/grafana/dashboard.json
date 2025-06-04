@@ -1,0 +1,19 @@
+{
+  "title": "Flow Metrics",
+  "panels": [
+    {
+      "type": "graph",
+      "targets": [{
+        "expr": "rate(flow_readings_total[5m])",
+        "legend": "Readings/sec"
+      }]
+    },
+    {
+      "type": "singlestat",
+      "targets": [{
+        "expr": "flow_rate_average",
+        "format": "L/min"
+      }]
+    }
+  ]
+}
