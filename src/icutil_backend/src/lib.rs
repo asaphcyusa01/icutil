@@ -195,6 +195,17 @@ fn get_readings_count() -> FlowResult<usize> {
     Ok(flow_readings.len())
 }
 
+#[query]
+fn documentation() -> String {
+    format!("# ICUtil API\n\n{}", include_str!("../icutil_backend.did"))
+}
+
+#[query]
+fn openapi_spec() -> String {
+    candid::export_service!();
+    __export_service()
+}
+
 // Update function to clear all readings (admin function)
 #[update]
 fn clear_all_readings() -> FlowResult<String> {
