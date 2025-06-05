@@ -82,6 +82,10 @@ fn record_flow_data(flow_rate: f64, device_id: Option<String>) -> FlowResult<Str
         validate_device_id(device_id)?;
     }
 
+    let shard_key = get_shard_key(&device_id);
+    let mut flow_readings: FlowReadings = storage::stable_restore(shard_key)
+        .map_err(|_| FlowError::StorageError("Failed to retrieve shard".to_string()))?;
+
     // Validate flow rate
     if flow_rate < MIN_FLOW_RATE || flow_rate > MAX_FLOW_RATE {
         return Err(FlowError::InvalidFlowRate(

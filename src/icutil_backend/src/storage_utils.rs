@@ -31,3 +31,16 @@ pub fn enforce_retention() -> Result<(), FlowError> {
     storage::stable_save(backups)
         .map_err(|e| FlowError::StorageError(format!("Retention enforcement failed: {e:?}")))
 }
+
+const NUM_SHARDS: usize = 8;
+
+fn get_shard_key(device_id: &Option<String>) -> u64 {
+    device_id.as_ref()
+        .map(|id| seahash::hash(id.as_bytes()) % NUM_SHARDS as u64)
+        .unwrap_or(0)
+}
+
+for shard in 0..NUM_SHARDS {
+    let data = storage::stable_restore(shard)?;
+    backups.insert(shard, data);
+}
