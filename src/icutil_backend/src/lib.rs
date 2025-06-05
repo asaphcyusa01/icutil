@@ -45,7 +45,43 @@ fn init() {
 
 // Update function to record a new flow reading with validation
 #[update]
+const MAX_FLOW_RATE: f64 = 1000.0;
+const DEVICE_ID_MAX_LENGTH: usize = 32;
+
+fn validate_flow_rate(rate: f64) -> Result<(), String> {
+    if rate.is_nan() {
+        return Err("Invalid flow rate: NaN value".into());
+    }
+    if rate < 0.0 {
+        return Err("Flow rate cannot be negative".into());
+    }
+    if rate > MAX_FLOW_RATE {
+        return Err(format!("Flow rate exceeds maximum allowed value of {}", MAX_FLOW_RATE));
+    }
+    Ok(())
+}
+
+fn validate_device_id(id: &str) -> Result<(), String> {
+    if id.is_empty() {
+        return Err("Device ID cannot be empty".into());
+    }
+    if id.len() > DEVICE_ID_MAX_LENGTH {
+        return Err(format!("Device ID exceeds {} characters", DEVICE_ID_MAX_LENGTH));
+    }
+    if !id.chars().all(|c| c.is_alphanumeric() || c == '-' || c == '_') {
+        return Err("Device ID contains invalid characters".into());
+    }
+    Ok(())
+}
+
+#[update]
 fn record_flow_data(flow_rate: f64, device_id: Option<String>) -> FlowResult<String> {
+    // Validate input parameters
+    validate_flow_rate(flow_rate)?;
+    if let Some(device_id) = &device_id {
+        validate_device_id(device_id)?;
+    }
+
     // Validate flow rate
     if flow_rate < MIN_FLOW_RATE || flow_rate > MAX_FLOW_RATE {
         return Err(FlowError::InvalidFlowRate(
@@ -217,8 +253,44 @@ fn clear_all_readings() -> FlowResult<String> {
 }
 
 #[update]
+const MAX_FLOW_RATE: f64 = 1000.0;
+const DEVICE_ID_MAX_LENGTH: usize = 32;
+
+fn validate_flow_rate(rate: f64) -> Result<(), String> {
+    if rate.is_nan() {
+        return Err("Invalid flow rate: NaN value".into());
+    }
+    if rate < 0.0 {
+        return Err("Flow rate cannot be negative".into());
+    }
+    if rate > MAX_FLOW_RATE {
+        return Err(format!("Flow rate exceeds maximum allowed value of {}", MAX_FLOW_RATE));
+    }
+    Ok(())
+}
+
+fn validate_device_id(id: &str) -> Result<(), String> {
+    if id.is_empty() {
+        return Err("Device ID cannot be empty".into());
+    }
+    if id.len() > DEVICE_ID_MAX_LENGTH {
+        return Err(format!("Device ID exceeds {} characters", DEVICE_ID_MAX_LENGTH));
+    }
+    if !id.chars().all(|c| c.is_alphanumeric() || c == '-' || c == '_') {
+        return Err("Device ID contains invalid characters".into());
+    }
+    Ok(())
+}
+
+#[update]
 fn record_flow_data(flow_rate: f64, device_id: Option<String>) -> FlowResult<String> {
     auth::authenticate(&["sensor", "admin"])?;
+    // Validate input parameters
+    validate_flow_rate(flow_rate)?;
+    if let Some(device_id) = &device_id {
+        validate_device_id(device_id)?;
+    }
+
     // Validate flow rate
     if flow_rate < MIN_FLOW_RATE || flow_rate > MAX_FLOW_RATE {
         return Err(FlowError::InvalidFlowRate(
@@ -1946,4 +2018,8 @@ where
             }
             Err(e) => return Err(SensorError::Storage {
                 source: e,
-                context: format!("Failed after {} retries
+                context: format!("Failed after {} retries:", retries)
+            })
+        }
+    }
+}
