@@ -86,9 +86,13 @@ fn get_daily_usage() -> Vec<(u64, f64)> {
     daily.into_iter().collect()
 }
 
-// self-debating to keep this
-fn check_rate_limit(caller: &Principal) -> Result<(), String> {
-    let mut data: WaterData = storage::stable_restore().unwrap().0;
+const RATE_LIMIT_WINDOW: u64 = 60_000_000_000; // 1 minute in nanoseconds
+const MAX_REQUESTS_PER_MINUTE: u64 = 100;
+
+#[update]
+fn check_rate_limit(caller: Principal) -> Result<(), String> {
+    let mut data = storage::stable_restore()
+    .map_err(|e| format!("Failed to restore data: {:?}", e))?.0;
     let now = ic_cdk::api::time();
     
     let (first_request, count) = data.rate_limits
@@ -113,7 +117,13 @@ fn check_rate_limit(caller: &Principal) -> Result<(), String> {
     }
 
     data.rate_limits.insert(*caller, (window_start, new_count));
-    storage::stable_save((data,)).map_err(|e| format!("Failed to save rate limit: {:?}", e))?;
+    storage::stable_save((data,))
+    .map_err(|e| format!("Failed to persist rate limit: {:?}", e))?;
+
+IC_COUNTERS.with(|c| {
+    let mut counters = c.borrow_mut();
+    counters.rate_limit_checks += 1;
+});
     
     Ok(())
 }
