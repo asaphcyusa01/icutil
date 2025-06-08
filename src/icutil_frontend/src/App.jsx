@@ -1,5 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import { icutil_backend } from 'declarations/icutil_backend';
+import { VirtualList } from 'react-virtualized';
 
 const initialState = {
   readings: [],
@@ -49,3 +50,19 @@ function App() {
 }
 
 export default App;
+
+function ReadingList({ readings }) {
+  return (
+    <VirtualList
+      width={800}
+      height={600}
+      rowCount={readings.length}
+      rowHeight={40}
+      rowRenderer={({ index, style }) => (
+        <div style={style}>
+          {readings[index].flowRate}
+        </div>
+      )}
+    />
+  );
+}
