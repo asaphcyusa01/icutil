@@ -3,6 +3,13 @@ import { Line, Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import { icutil_backend, electricity_backend, water_backend } from 'declarations/icutil_backend';
 import './Dashboard.scss';
+import { Suspense } from 'react';
+import {
+  Card,
+  Metric,
+  ProgressCircle,
+  Badge
+} from '@tremor/react';
 
 Chart.register(...registerables);
 
@@ -229,3 +236,19 @@ const loadingSpinnerStyles = {
   ...loadingSpinnerStyles,
   animation: `${spinKeyframes} 1s linear infinite`
 };
+
+export default function Dashboard({ stats }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <Card>
+        <Metric>{stats.average.toFixed(2)} L/min</Metric>
+        <Badge color="emerald">Average Flow Rate</Badge>
+        <ProgressCircle 
+          value={(stats.current / stats.capacity) * 100}
+          size="md"
+          className="mt-4"
+        />
+      </Card>
+    </div>
+  );
+}
