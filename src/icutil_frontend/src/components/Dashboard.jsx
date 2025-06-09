@@ -10,6 +10,7 @@ import {
   ProgressCircle,
   Badge
 } from '@tremor/react';
+import { device_management_backend } from 'declarations/device_management_backend';
 
 Chart.register(...registerables);
 
@@ -51,6 +52,7 @@ const Dashboard = () => {
   const [timeRange, setTimeRange] = useState('7d');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [devices, setDevices] = useState([]);
 
   // Authentication with error handling
   const login = async () => {
@@ -252,3 +254,39 @@ export default function Dashboard({ stats }) {
     </div>
   );
 }
+
+// Device state management
+const [devices, setDevices] = useState([]);
+
+// Device fetching in useEffect
+async function fetchDevices() {
+  try {
+    const deviceList = await device_management_backend.list_devices();
+    setDevices(deviceList);
+  } catch (err) {
+    setError(new Error(`Device fetch failed: ${err.message}`));
+  }
+}
+
+// Device table rendering
+<div className="device-list">
+  <h3>Connected Devices</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Device ID</th>
+        <th>Status</th>
+        <th>Firmware</th>
+      </tr>
+    </thead>
+    <tbody>
+      {devices.map(device => (
+        <tr key={device.id}>
+          <td>{device.id}</td>
+          <td>{device.status}</td>
+          <td>{device.firmware_version}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
