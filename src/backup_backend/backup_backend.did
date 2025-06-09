@@ -1,0 +1,28 @@
+service : {
+  // Backup operations
+  create_backup : (record {
+    data_source : text;
+    retention_days : nat32;
+  }) -> (variant { ok : text; err : text });
+
+  // Recovery operations
+  restore_backup : (text, nat64) -> (variant { ok : text; err : text });
+  list_backups : () -> (vec BackupRecord) query;
+
+  // Schedule management 
+  set_backup_schedule : (text, BackupPolicy) -> (variant { ok; err : text });
+  get_schedules : () -> (vec BackupSchedule) query;
+};
+
+type BackupRecord = record {
+  timestamp : nat64;
+  data_hash : text;
+  source_canister : text;
+  size_bytes : nat64;
+};
+
+type BackupPolicy = record {
+  frequency : variant { daily; weekly; monthly };
+  retention : nat32;
+  max_versions : nat8;
+};
