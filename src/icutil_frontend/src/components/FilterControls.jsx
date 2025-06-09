@@ -13,7 +13,7 @@ export default function FilterControls({ onFilter }) {
         type="range"
         min="0"
         max="1000"
-        onChange={(e) => setFilters(...)}
+        onChange={(e) => setFilters({...filters, minFlow: parseInt(e.target.value)})}
       />
     </div>
   );

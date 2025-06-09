@@ -1,0 +1,30 @@
+service : {
+  // Device registration
+  register_device : (record {
+    device_id : text;
+    device_type : text;
+    initial_config : text;
+  }) -> (variant { ok : text; err : text });
+
+  // Device status updates
+  update_device_status : (record {
+    device_id : text;
+    status : text;
+    last_seen : nat64;
+  }) -> (variant { ok });
+
+  // Query methods
+  get_device_info : (text) -> (variant { ok : DeviceInfo; err : text }) query;
+  list_devices : () -> (vec DeviceInfo) query;
+
+  // Configuration management
+  update_firmware : (text, text) -> (variant { ok : text; err : text });
+};
+
+type DeviceInfo = record {
+  device_id : text;
+  registered_at : nat64;
+  last_heartbeat : nat64;
+  firmware_version : text;
+  status : text;
+};
