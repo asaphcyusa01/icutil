@@ -167,3 +167,9 @@ fn validate_reading(timestamp: u64) -> Result<(), String> {
         Ok(())
     }
 }
+
+#[update]
+async fn store_reading(kwh: f64) {
+    // Existing storage logic
+    backup_backend::create_backup("energy_data".into(), reading_data).await;
+}

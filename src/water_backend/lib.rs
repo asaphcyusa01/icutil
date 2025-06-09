@@ -127,3 +127,9 @@ IC_COUNTERS.with(|c| {
     
     Ok(())
 }
+
+#[update]
+async fn record_reading(flow_rate: f64) -> Result<(), String> {
+    // Existing recording logic
+    backup_backend::create_backup("water_data".into(), data).await?;
+}
