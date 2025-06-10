@@ -67,3 +67,36 @@ fn validate_token(token: &str) -> Result<Claims, String> {
         .map(|data| data.claims)
         .map_err(|e| format!("Invalid token: {:?}", e))
 }
+
+// Role storage
+thread_local! {
+    static ROLE_STORE: RefCell<HashMap<Principal, Vec<String>>> = RefCell::new(HashMap::new());
+}
+
+// Role management endpoints
+#[ic_cdk::update]
+fn assign_roles(user: Principal, roles: Vec<String>) {
+    ROLE_STORE.with(|store| {
+        store.borrow_mut().insert(user, roles);
+    });
+}
+
+#[ic_cdk::query]
+fn get_roles(user: Principal) -> Vec<String> {
+    ROLE_STORE.with(|store| {
+        store.borrow().get(&user).cloned().unwrap_or_default()
+    })
+}
+
+// Updated JWT generation with roles
+async fn generate_token(user: &User) -> String {
+    let roles = get_roles(user.principal);
+    let claims = Claims {
+        sub: user.principal.to_string(),
+        exp: (ic_cdk::api::time() + 3600_000_000_000) as usize,
+        roles,
+    };
+    
+    encode(&Header::default(), &claims, &EncodingKey::from_secret(state.jwt_secret.as_bytes()))
+        .expect("Failed to generate token")
+}

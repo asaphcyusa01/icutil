@@ -377,3 +377,42 @@ where
 ic_cdk::println!("Recording flow: {} L/min", flow_rate);
 COUNTER.with(|c| c.borrow_mut().inc());
 
+
+// RBAC Middleware
+async fn require_role(jwt_token: &str, required_role: &str) -> Result<Claims, Error> {
+    let claims = auth_backend::validate_token(jwt_token)
+        .await
+        .map_err(|_| Error::Unauthorized {
+            message: "Invalid token".into(),
+        })?;
+
+    if claims.roles.contains(&required_role.to_string()) {
+        Ok(claims)
+    } else {
+        Err(Error::Unauthorized {
+            message: format!("Requires {} role", required_role),
+        })
+    }
+}
+
+// Modified device status update with RBAC
+pub async fn update_device_status(jwt_token: String, device_id: String, status: DeviceStatus) -> Result<(), Error> {
+    let _claims = require_role(&jwt_token, "device_manager").await?;
+    
+    // Original implementation
+    devices::update_status(&device_id, status)
+}
+
+// Updated flow control endpoint
+pub async fn adjust_flow_rate(jwt_token: String, device_id: String, rate: u64) -> Result<(), Error> {
+    let claims = require_role(&jwt_token, "flow_operator").await?;
+    
+    if rate > MAX_FLOW_RATE {
+        return Err(Error::InvalidInput {
+            message: format!("Exceeds max rate of {}", MAX_FLOW_RATE),
+        });
+    }
+    
+    flow_control::set_rate(&device_id, rate)
+}
+
