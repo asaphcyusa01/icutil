@@ -66,3 +66,62 @@ function ReadingList({ readings }) {
     />
   );
 }
+
+// Role Management Component
+const RoleManager = () => {
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [availableRoles, setAvailableRoles] = useState(['admin', 'device_manager', 'flow_operator']);
+  const [assignedRoles, setAssignedRoles] = useState([]);
+
+  useEffect(() => {
+    // Fetch users from auth backend
+    auth_backend.list_users().then(setUsers);
+  }, []);
+
+  const handleRoleUpdate = async () => {
+    try {
+      await auth_backend.assign_roles(selectedUser, assignedRoles);
+      alert('Roles updated successfully');
+    } catch (error) {
+      alert(`Role update failed: ${error}`);
+    }
+  };
+
+  return (
+    <div className="role-manager">
+      <h2>Role Management</h2>
+      <Select
+        options={users.map(u => ({ value: u.principal, label: u.username }))}
+        onChange={(e) => {
+          setSelectedUser(e.value);
+          auth_backend.get_roles(e.value).then(setAssignedRoles);
+        }}
+        placeholder="Select user"
+      />
+      
+      <div className="role-selector">
+        {availableRoles.map(role => (
+          <label key={role}>
+            <input
+              type="checkbox"
+              checked={assignedRoles.includes(role)}
+              onChange={(e) => {
+                const newRoles = e.target.checked
+                  ? [...assignedRoles, role]
+                  : assignedRoles.filter(r => r !== role);
+                setAssignedRoles(newRoles);
+              }}
+            />
+            {role}
+          </label>
+        ))}
+      </div>
+
+      <button onClick={handleRoleUpdate}>Save Roles</button>
+    </div>
+  );
+};
+
+// Add to main app component
+<RoleManager />

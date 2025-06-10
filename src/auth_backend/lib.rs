@@ -100,3 +100,40 @@ async fn generate_token(user: &User) -> String {
     encode(&Header::default(), &claims, &EncodingKey::from_secret(state.jwt_secret.as_bytes()))
         .expect("Failed to generate token")
 }
+
+// Audit Log Storage
+thread_local! {
+    static AUDIT_LOGS: RefCell<Vec<AuditLog>> = RefCell::new(Vec::new());
+}
+
+#[derive(Clone, Debug, CandidType, Deserialize)]
+pub struct AuditLog {
+    timestamp: u64,
+    admin_principal: Principal,
+    target_user: Principal,
+    action: String,
+    details: Vec<String>,
+}
+
+// Updated role assignment with audit logging
+#[ic_cdk::update]
+fn assign_roles(admin: Principal, user: Principal, roles: Vec<String>) {
+    ROLE_STORE.with(|store| {
+        store.borrow_mut().insert(user, roles.clone());
+    });
+    
+    AUDIT_LOGS.with(|logs| {
+        logs.borrow_mut().push(AuditLog {
+            timestamp: ic_cdk::api::time(),
+            admin_principal: admin,
+            target_user: user,
+            action: "role_update".to_string(),
+            details: vec![format!("Assigned roles: {:?}", roles)],
+        });
+    });
+}
+
+#[ic_cdk::query]
+fn get_audit_logs() -> Vec<AuditLog> {
+    AUDIT_LOGS.with(|logs| logs.borrow().clone())
+}
