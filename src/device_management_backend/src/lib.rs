@@ -21,11 +21,10 @@ fn init() {
 
 #[update]
 fn register_device(device_id: String, jwt_token: String) -> Result<String, String> {
-    let auth_canister = auth_backend::AuthClient::new();
-    let user = auth_canister.validate_token(jwt_token)?;
+    let claims = auth_backend::validate_token(&jwt_token)?;
     
-    if !user.roles.contains(&UserRole::DeviceManager) {
-        return Err("Insufficient permissions".into());
+    if !claims.roles.contains(&UserRole::DeviceManager) {
+        return Err("Insufficient permissions for device registration".into());
     }
     ic_cdk::println!("Registering device: {}", device_id);
     
