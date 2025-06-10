@@ -5,9 +5,20 @@ t  service auth {
 }
 
 type Claims = record {
-    sub: principal;
+    sub: text;
     exp: nat64;
-    roles: vec UserRole;
+    roles: vec text;
+};
+
+service : {
+    // Role management
+    assign_roles : (principal, vec text) -> ();
+    get_roles : (principal) -> (vec text) query;
+    
+    // Existing authentication methods
+    register_user : (text, text) -> (text);
+    login : (text, text) -> (text);
+    validate_token : (text) -> (Claims) query;
 };
 
 type User = record {
