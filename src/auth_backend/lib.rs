@@ -31,3 +31,39 @@ struct Claims {
     exp: u64,
     roles: Vec<UserRole>,
 }
+
+// Inside AuthState
+#[init]
+fn init() {
+    let mut state = AuthState {
+        users: HashMap::new(),
+        jwt_secret: generate_secure_secret(),
+    };
+    // Initialize admin user
+}
+
+fn generate_secure_secret() -> String {
+    let mut rng = rand::thread_rng();
+    let bytes: [u8; 32] = rng.gen();
+    hex::encode(bytes)
+}
+
+#[update]
+fn generate_token(principal: Principal) -> String {
+    let expiration = ic_cdk::api::time() + 86_400_000_000_000; // 24 hours
+    let claims = Claims {
+        sub: principal,
+        exp: expiration,
+        roles: vec![UserRole::DeviceManager],
+    };
+    
+    encode(&Header::default(), &claims, &EncodingKey::from_secret(state.jwt_secret.as_bytes()))
+        .expect("Failed to generate token")
+}
+
+#[query]
+fn validate_token(token: &str) -> Result<Claims, String> {
+    decode::<Claims>(token, &DecodingKey::from_secret(state.jwt_secret.as_bytes()), &Validation::default())
+        .map(|data| data.claims)
+        .map_err(|e| format!("Invalid token: {:?}", e))
+}
