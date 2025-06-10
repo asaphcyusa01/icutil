@@ -1,0 +1,14 @@
+service auth {
+    login : (principal: principal, signature: vec nat8) -> (text) oneway;
+    validate_token : (text) -> (User) query;
+    get_user_roles : (principal) -> (vec UserRole) query;
+}
+
+type User = record {
+    principal: principal;
+    roles: vec UserRole;
+    session_token: text;
+    expires_at: nat64;
+};
+
+type UserRole = variant { Admin; DeviceManager; Viewer };
