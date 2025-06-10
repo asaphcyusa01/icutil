@@ -1,8 +1,14 @@
-service auth {
-    login : (principal: principal, signature: vec nat8) -> (text) oneway;
-    validate_token : (text) -> (User) query;
+t  service auth {
+    generate_token : (principal: principal) -> (text);
+    validate_token : (text) -> (Claims) query;
     get_user_roles : (principal) -> (vec UserRole) query;
 }
+
+type Claims = record {
+    sub: principal;
+    exp: nat64;
+    roles: vec UserRole;
+};
 
 type User = record {
     principal: principal;
