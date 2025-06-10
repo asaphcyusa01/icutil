@@ -20,7 +20,13 @@ fn init() {
 }
 
 #[update]
-fn register_device(device_id: String, device_type: String, config: String) -> Result<String, String> {
+fn register_device(device_id: String, jwt_token: String) -> Result<String, String> {
+    let auth_canister = auth_backend::AuthClient::new();
+    let user = auth_canister.validate_token(jwt_token)?;
+    
+    if !user.roles.contains(&UserRole::DeviceManager) {
+        return Err("Insufficient permissions".into());
+    }
     ic_cdk::println!("Registering device: {}", device_id);
     
     unsafe {
@@ -81,3 +87,2011 @@ fn update_firmware(device_id: String, version: String) -> Result<String, String>
         }
     }
 }
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
+                Ok(())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[query]
+fn get_device_info(device_id: String) -> Result<Device, String> {
+    unsafe {
+        DEVICES
+            .as_ref()
+            .unwrap()
+            .get(&device_id)
+            .cloned()
+            .ok_or_else(|| "Device not found".to_string())
+    }
+}
+
+#[update]
+fn update_firmware(device_id: String, version: String) -> Result<String, String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.firmware_version = version;
+                ic_cdk::println!("Updated firmware for device: {} to {}", device_id, device.firmware_version);
+                Ok("Firmware updated successfully".to_string())
+            }
+            None => Err("Device not found".to_string()),
+        }
+    }
+}
+
+#[update]
+fn update_device_status(device_id: String, status: String) -> Result<(), String> {
+    unsafe {
+        match DEVICES.as_mut().unwrap().get_mut(&device_id) {
+            Some(device) => {
+                device.last_heartbeat = ic_cdk::api::time();
+                ic_cdk::println!("Updated status for device: {}", device_id);
